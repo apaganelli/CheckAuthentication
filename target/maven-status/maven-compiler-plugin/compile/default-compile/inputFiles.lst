@@ -1,4 +1,1 @@
-/home/iyda/ContextNet/SecCNGateway/src/main/java/lac/cnet/pnode/radius/MNodeRadius.java
-/home/iyda/ContextNet/SecCNGateway/src/main/java/lac/cnet/gateway/radius/RadiusGatewayTest.java
-/home/iyda/ContextNet/SecCNGateway/src/main/java/lac/cnet/radius/CheckAuthorization.java
-/home/iyda/ContextNet/SecCNGateway/src/main/java/lac/cnet/pnode/radius/PNodeRadiusTest.java
+/home/iyda/eclipse-workspace/RadiusTests/src/main/java/lac/cnet/radius/CheckAuthentication.java

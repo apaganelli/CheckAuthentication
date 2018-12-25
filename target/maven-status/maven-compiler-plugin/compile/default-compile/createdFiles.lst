@@ -1,1 +1,2 @@
-lac/cnet/gateway/radius/RadiusGatewayTest.class
+lac/cnet/radius/CheckAuthentication$task.class
+lac/cnet/radius/CheckAuthentication.class

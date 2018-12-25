@@ -21,15 +21,15 @@ public class CheckAuthentication {
 	// For checking periodically Radius Authorization.
 	Timer timer;
 	long delay;
-	String[] messageTokens;
+	String[] messageTokens;							// Auxiliary list to hold attribute values.
 	String token = "";
-	String server = "192.168.56.101";
-	String user = "mobilenode";
-	String pass = "123";
-	String nasId;	
-	Date expirationTime;
+	String server = "localhost";				// AuthServer IP address. It uses default ports.
+	String user = "mobilenode";						
+	String pass = "upass";
+	String nasId;									// nasID is used to identify the client node. 
+	Date expirationTime;							// Holds session expiration time.
 	
-	private String secret = "!cOnTeXtNeT357?lAc&PuCrIo";
+	private String secret = "secretpass";
 			
 	/**
 	 * Internal Timer class to control expiration time.
@@ -68,7 +68,16 @@ public class CheckAuthentication {
 		this.pass = pass;
 		this.nasId = id;
 	}	
-		
+	
+	public CheckAuthentication(String serv, String user, String pass, String id, String secret) {
+		this.timer = new Timer();		// For checking expiration.
+		this.server = serv;
+		this.user = user;
+		this.pass = pass;
+		this.nasId = id;
+		this.secret = secret;
+	}
+			
 	/**
 	 *  Authorization method that uses parameters passed in the constructor call.
 	 *  It sends an Access-Request packet with NAS-Identifier attribute that should inform the type of the client:
@@ -92,6 +101,7 @@ public class CheckAuthentication {
 		AccessRequest ar = new AccessRequest(user, pass);
 		ar.setAuthProtocol(AccessRequest.AUTH_CHAP);
 		ar.addAttribute("NAS-Identifier", this.nasId);
+
 		System.out.println(ar);
 		try {
 			RadiusPacket response = rc.authenticate(ar);
@@ -275,6 +285,13 @@ public class CheckAuthentication {
 		return true;
 	}
 	
+	public boolean CheckTokenStatus(String nasId, String remoteExpiration, String remoteToken) {
+		UUID id = UUID.randomUUID();
+		long expiration = Long.parseLong(remoteExpiration);
+		
+		return CheckTokenStatus(id, user, nasId, expiration, remoteToken);
+	}
+	
 	/**
 	 * Sets up radius shared secret of the client.
 	 * 
@@ -291,14 +308,28 @@ public class CheckAuthentication {
 	public void setIsRenew(boolean value) {
 		this.isRenew = value;
 	}
-
+	
+	public void setNasId(String id) {
+		this.nasId = id;
+	}
+	
+	public void setUser(String user) {
+		this.user = user;
+	}
+	
+	public void setPassword(String upass) {
+		this.pass = upass;
+	}
 	
 	public long getTimeBeforeExpirationForRenew() {
 		return timeBeforeExpirationForRenew;
 	}
+	
+	public String getToken() { return token; }
+	public long getExpiration() { return this.expirationTime.getTime(); }
+	
 
 	public void setTimeBeforeExpirationForRenew(long timeBeforeExpirationForRenew) {
 		this.timeBeforeExpirationForRenew = timeBeforeExpirationForRenew;
-	}
-	
+	}	
 }
